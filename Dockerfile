@@ -1,18 +1,12 @@
-# Trace API — Python FastAPI ONNX U²Net TensorRT Docker
-# Tommy Shamamba 9+ years (2017-2026) FLEXIBILITY true
-# 7M+ users 5M events/day 99.99% latency -35% MTTR -45%
-# FROM python:3.11-slim RUN pip install fastapi uvicorn onnxruntime-gpu pillow numpy python-multipart rembg
-FROM python:3.11-slim
-
+FROM python:3.12-slim
+ARG WITH_MODEL=false
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 WORKDIR /app
-ENV FLEXIBILITY=true
-ENV YEARS="9+ (2017-2026)"
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
+COPY requirements.txt requirements-model.txt ./
+RUN pip install --no-cache-dir -r requirements.txt \
+ && if [ "$WITH_MODEL" = "true" ]; then pip install --no-cache-dir -r requirements-model.txt; fi
 COPY src ./src
+RUN useradd --create-home app
+USER app
 EXPOSE 8000
 CMD ["uvicorn", "src.trace_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
