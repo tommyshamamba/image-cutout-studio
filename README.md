@@ -1,13 +1,13 @@
 # Image Cutout Studio
 
-[![CI](https://github.com/tommyshamamba/trace-stores-combo/actions/workflows/ci.yml/badge.svg)](https://github.com/tommyshamamba/trace-stores-combo/actions/workflows/ci.yml)
+[![CI](https://github.com/tommyshamamba/image-cutout-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/tommyshamamba/image-cutout-studio/actions/workflows/ci.yml)
 
 A FastAPI background-removal service with a Next.js front end. Upload an image and get back a
 transparent PNG to preview and download.
 
 > Portfolio project, run locally. It claims no production traffic or throughput figures.
 > A more complete version with storefront and browser tests lives in
-> [SONOFGOD./trace-stores](https://github.com/tommyshamamba/SONOFGOD./tree/main/trace-stores).
+> [platform-engineering-portfolio/trace-stores](https://github.com/tommyshamamba/platform-engineering-portfolio/tree/main/trace-stores).
 
 ## What it does
 
