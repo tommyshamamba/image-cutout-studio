@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Trace Stores Combo — FLEXIBILITY — Tommy Shamamba",
-  description: "Sticker Mule Trace + Stores + Studio — 9+ years — 7M+ users",
+  title: "Image Cutout Studio",
+  description: "Upload an image and download a transparent PNG.",
 };
 
 export default function RootLayout({
