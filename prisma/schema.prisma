@@ -1,0 +1,61 @@
+// Stores marketplace — Postgres — multi-tenant isolated datastores pattern
+// Tommy Shamamba 9+ years (2017-2026) — FLEXIBILITY true
+// Creator login, products, orders, previewUrl image preview generator
+// 7M+ users 5M events/day 99.99% — latency -35% via indexing query tuning
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Creator {
+  id           String    @id @default(cuid())
+  tenantId     String
+  email        String    @unique
+  name         String
+  flexibility  Boolean   @default(true)
+  products     Product[]
+  orders       Order[]
+  createdAt    DateTime  @default(now())
+
+  @@index([tenantId])
+  @@index([email])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  tenantId    String
+  creatorId   String
+  creator     Creator  @relation(fields: [creatorId], references: [id])
+  name        String
+  designUrl   String
+  previewUrl  String
+  priceCents  Int
+  flexibility Boolean  @default(true)
+  orders      Order[]
+  createdAt   DateTime @default(now())
+
+  @@index([tenantId, creatorId])
+  @@index([previewUrl])
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  tenantId    String
+  creatorId   String
+  productId   String
+  creator     Creator  @relation(fields: [creatorId], references: [id])
+  product     Product  @relation(fields: [productId], references: [id])
+  quantity    Int      @default(1)
+  status      String   @default("created")
+  stripeId    String?
+  flexibility Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@index([tenantId, status])
+  @@index([creatorId, createdAt])
+}

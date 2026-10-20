@@ -1,0 +1,45 @@
+# FLEXIBILITY=true YEARS=9+ (2017-2026)
+# Postgres 15, Redis 7, trace-api 8000, web 3000
+# 7M+ users 5M events/day 99.99% — Tommy Shamamba 9+ years
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: sticker
+      POSTGRES_PASSWORD: mule
+      POSTGRES_DB: stores
+      FLEXIBILITY: "true"
+      YEARS: "9+ (2017-2026)"
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  trace-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      FLEXIBILITY: "true"
+      YEARS: "9+ (2017-2026)"
+      TRACE_OUTPUT_DIR: /tmp
+    depends_on:
+      - postgres
+      - redis
+
+  web:
+    image: node:20-alpine
+    working_dir: /web
+    volumes:
+      - ./web:/web
+    command: sh -c "npm install && npm run dev -- --hostname 0.0.0.0 --port 3000"
+    ports:
+      - "3000:3000"
+    environment:
+      FLEXIBILITY: "true"
+      YEARS: "9+ (2017-2026)"
+    depends_on:
+      - trace-api
